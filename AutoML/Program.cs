@@ -16,7 +16,6 @@ TrainTestData trainTestData = mLContext.Data.TrainTestSplit(dataView, testFracti
 //Define the experiment settings
 var experimentSettings = new BinaryExperimentSettings();
 experimentSettings.MaxExperimentTimeInSeconds = 400;
-
 //Create the experiment
 var experiment = mLContext.Auto().CreateBinaryClassificationExperiment(experimentSettings);
 
@@ -30,7 +29,7 @@ Console.WriteLine($"Accuracy: {metrics.Accuracy}");
 Console.WriteLine($"F1 Score: {metrics.F1Score}");
 Console.WriteLine($"Log Loss: {metrics.LogLoss}");
 Console.WriteLine($"Entropy: {metrics.Entropy}");
-
+//Save model
 mLContext.Model.Save(model, trainTestData.TrainSet.Schema, "modelEmployee.zip");
 //Load model save
 DataViewSchema modelSchema;

@@ -5,13 +5,13 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.IO;
 using Microsoft.ML.Data;
 
-//Khai bao doi tuong MLContext
+//Create object MLContext
 MLContext mLContext = new MLContext();
-//load du lieu vao IDataview
+//Load data into IDataview
 IDataView dataView = mLContext.Data.LoadFromTextFile<EmployeeData>("C:\\Users\\Cong Hao\\Documents\\Data Mining\\ML.NET\\MachineLearning_Microsoft\\MachineLearning_Microsoft\\Employee.csv", separatorChar: ',', hasHeader: true);
-//tach du lieu cho 20% test vaf 80% de train
+// Split the data into training and testing sets
 TrainTestData trainTestData = mLContext.Data.TrainTestSplit(dataView, testFraction: 0.2);
-//chon giai thuat, rut trich dac trung cho tap du lieu
+//Select decompression, special extraction for data
 var pipeline = mLContext.Transforms.Categorical.OneHotEncoding(new[] {new InputOutputColumnPair("Education"),
         new InputOutputColumnPair("City"), new InputOutputColumnPair("Gender")})
     .Append(mLContext.Transforms.NormalizeMinMax("JoiningYear"))
@@ -20,11 +20,11 @@ var pipeline = mLContext.Transforms.Categorical.OneHotEncoding(new[] {new InputO
     .Append(mLContext.Transforms.NormalizeMinMax("ExperienceInCurrentDomain"))
     .Append(mLContext.Transforms.Conversion.ConvertType("EverBenched", outputKind: DataKind.Single))
     .Append(mLContext.Transforms.Concatenate("Features", "Education", "JoiningYear", "City", "PaymentTier", "Age", "Gender", "EverBenched", "ExperienceInCurrentDomain"))
-    .Append(mLContext.BinaryClassification.Trainers.LdSvm(labelColumnName:"LeaveOrNot", featureColumnName:"Features"))
+    .Append(mLContext.BinaryClassification.Trainers.LdSvm(labelColumnName: "LeaveOrNot", featureColumnName: "Features"))
     .Append(mLContext.BinaryClassification.Calibrators.Platt(labelColumnName: "LeaveOrNot"));
-//train mo hinh: lay 80% de train
+//Train model
 var model = pipeline.Fit(trainTestData.TrainSet);
-//danh gia mo hinh
+//Metrics model
 var metrics = mLContext.BinaryClassification.Evaluate(model.Transform(trainTestData.TestSet), labelColumnName: "LeaveOrNot");
 //Do chinh xac
 Console.WriteLine($"Accuracy: {metrics.Accuracy}");
@@ -34,9 +34,9 @@ Console.WriteLine($"F1 Score: {metrics.F1Score}");
 Console.WriteLine($"Log Loss: {metrics.LogLoss}");
 //Cang ve 0 cang tot
 Console.WriteLine($"Entropy: {metrics.Entropy}");
-//Luu mo hinh
+//Save model
 mLContext.Model.Save(model, trainTestData.TrainSet.Schema, "modelEmployee.zip");
-//goi model da luu
+//Using model is save
 DataViewSchema modelSchema;
 var modelSave = mLContext.Model.Load("modelEmployee.zip", out modelSchema);
 var sampleData = new EmployeeData { Education = "Bachelors", JoiningYear = 2016, City = "Bangalore", PaymentTier = 1, Age = 33, Gender = "Female", EverBenched = false, ExperienceInCurrentDomain = 0 };
