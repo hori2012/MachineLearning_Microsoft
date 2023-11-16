@@ -32,8 +32,8 @@ Console.WriteLine($"Entropy: {metrics.Entropy}");
 //Save model
 mLContext.Model.Save(model, trainTestData.TrainSet.Schema, "modelEmployee.zip");
 //Load model save
-DataViewSchema modelSchema;
-var modelSave = mLContext.Model.Load("modelEmployee.zip", out modelSchema);
-var sampleData = new EmployeeData { Education = "Masters", JoiningYear = 2018, City = "New Delhi", PaymentTier = 3, Age = 27, Gender = "Male", EverBenched = false, ExperienceInCurrentDomain = 5 };
-var output = mLContext.Model.CreatePredictionEngine<EmployeeData, PredictEmployee>(modelSave).Predict(sampleData);
-Console.WriteLine("Result: " + output.LeaveOrNot);
+//DataViewSchema modelSchema;
+//var modelSave = mLContext.Model.Load("modelEmployee.zip", out modelSchema);
+//var sampleData = new EmployeeData { Education = "Masters", JoiningYear = 2018, City = "New Delhi", PaymentTier = 3, Age = 27, Gender = "Male", EverBenched = false, ExperienceInCurrentDomain = 5 };
+//var output = mLContext.Model.CreatePredictionEngine<EmployeeData, PredictEmployee>(modelSave).Predict(sampleData);
+//Console.WriteLine("Result: " + output.LeaveOrNot);
