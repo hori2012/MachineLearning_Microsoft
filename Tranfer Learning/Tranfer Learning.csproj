@@ -6,6 +6,7 @@
     <RootNamespace>Tranfer_Learning</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,6 +14,13 @@
     <PackageReference Include="Microsoft.ML.ImageAnalytics" Version="2.0.1" />
     <PackageReference Include="Microsoft.ML.TensorFlow" Version="2.0.1" />
     <PackageReference Include="Microsoft.ML.Vision" Version="2.0.1" />
+    <PackageReference Include="SciSharp.TensorFlow.Redist" Version="1.14.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Program.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
   </ItemGroup>
 
 </Project>
